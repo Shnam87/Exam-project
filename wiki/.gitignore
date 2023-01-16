@@ -1,4 +1,8 @@
 node_modules
+article
+testing
+auth
+
 
 /.cache
 /build
