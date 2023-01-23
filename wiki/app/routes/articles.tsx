@@ -1,41 +1,62 @@
-import { json, LoaderArgs } from "@remix-run/node";
+import { json, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { Link, Outlet, useLoaderData } from "@remix-run/react";
-import { prisma } from "~/utils/db.sever";
+import { getArticles } from "~/utils/article.server";
+//import { prisma } from "~/utils/db.sever";
+import { prisma } from "~/utils/dbConnection.server";
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ params, request }: LoaderArgs) => {
+  const allArticles = await getArticles();
   const articleList = await prisma.article.findMany({
     orderBy: { createdAt: "desc" },
     select: { slug: true, title: true, updatedAt: true },
   });
   //const user = await getUser(request);
+  //console.log(params);
 
-  return json({
-    articleList,
-    //user,
-  });
+  return json({ allArticles });
+};
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Start page",
+  };
 };
 
 export default function Articles() {
-  const info = useLoaderData<typeof loader>();
+  const { allArticles } = useLoaderData<typeof loader>();
 
   return (
-    <div className="flex justify-around mt-8 border-4 border-black">
-      <div>
-        {info.articleList.length === 0 ? (
+    <div className="flex mt-8 border-4 border-black justify-evenly">
+      <div className="flex w-1/4 border-4 border-green-700 ">
+        {allArticles.length === 0 ? (
           <p> inga artikel ännu </p>
         ) : (
-          <ol className="list-decimal list-inside border-4 border-blue-700">
-            {info.articleList.map((article) => (
+          <ol className="flex flex-col w-full px-3 list-decimal list-inside border-4 border-blue-700 xl:px-6">
+            {allArticles.map((article) => (
               <li className="mt-4" key={article.slug}>
+                <button>
+                  <img
+                    className="w-4 mr-1"
+                    src="/icons/thumb_up.svg"
+                    alt="Like mark"
+                  />
+                </button>
+
                 <Link to={article.slug} prefetch="intent" className="text-lg">
-                  {article.title}
+                  {article.title} {/*  By { article.author} */}
                 </Link>
+
+                <p>
+                  {" "}
+                  <span>{article.likesCount} like</span> -{" "}
+                  <span> By: {article.author.username} </span>{" "}
+                </p>
               </li>
             ))}
           </ol>
         )}
       </div>
-      <div className="w-2/4 max-w-screen-xl border-4 border-red-700">
+      <div className="w-2/4 max-w-screen-xl border-4 border-red-500">
         <Outlet />
       </div>
     </div>

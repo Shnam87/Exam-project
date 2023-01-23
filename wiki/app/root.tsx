@@ -66,10 +66,10 @@ function Layout({ children }: { children: React.ReactNode }) {
         {user ? (
           <div className="flex items-center justify-between">
             <p className="mr-8">
-              <Link to={`/${user.username}`}> Hi {user.username} </Link>
+              <Link to="/profile"> Hi {user.username} </Link>
             </p>
             <p className="mx-8 ">
-              <Link to="new"> Add a new article </Link>
+              <Link to="articles/new"> Add a new article </Link>
             </p>
             <Form action="/logout" method="post">
               <button
