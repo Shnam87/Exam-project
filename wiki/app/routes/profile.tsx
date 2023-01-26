@@ -26,8 +26,8 @@ export default function UserDashboard() {
 
   return (
     <div className="flex justify-center w-full">
-      <div className="flex flex-col w-full h-full mt-8 border-4 border-r border-yellow-900 shadow-xl justify-evenly bg-gray-50 sm:flex-row">
-        <div className="flex flex-col px-4 pt-4 border-4 border-r border-yellow-500 shadow-xl lg:px-8 bg-gray-50 sm:w-3/12">
+      <div className="flex flex-col w-full h-full mt-8 border-r shadow-xl justify-evenly bg-gray-50 sm:flex-row">
+        <div className="flex flex-col px-4 pt-4 border-r shadow-xl lg:px-8 bg-gray-50 sm:w-3/12">
           <div className="flex items-center justify-center">
             <img
               src={`https://ui-avatars.com/api/?format=svg&uppercase=true&size=128&rounded=true&name=${user.username}`}
@@ -63,7 +63,7 @@ export default function UserDashboard() {
           </ol>
         </div>
 
-        <div className="w-full border-4 border-blue-900 sm:w-6/12">
+        <div className="w-full sm:w-6/12">
           <Outlet />
         </div>
       </div>

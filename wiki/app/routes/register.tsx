@@ -22,6 +22,11 @@ export const action = async ({ request }: ActionArgs) => {
   const email = registerData.get("email");
   const password = registerData.get("password");
   const confirmPassword = registerData.get("confirmPassword");
+  const newsletter =
+    registerData.has("newsletter") && registerData.get("newsletter") === "on"
+      ? true
+      : false;
+
   const redirectTo = validateRedirect(registerData.get("redirectTo"), "/");
 
   if (typeof username !== "string" || username.length < 4) {
@@ -108,7 +113,7 @@ export const action = async ({ request }: ActionArgs) => {
     );
   }
 
-  const user = await registerUser({ username, email, password });
+  const user = await registerUser({ username, email, password, newsletter });
 
   return createUserSession({
     request,
@@ -130,15 +135,16 @@ export default function Register() {
   const actionData = useActionData<typeof action>();
 
   return (
-    <div className="flex flex-col justify-center min-h-full">
-      <div className="w-full max-w-md px-8 mx-auto">
+    <div className="flex flex-col justify-center min-h-full mt-12">
+      <div className="w-full max-w-md mx-auto">
+        <p className="mb-8 text-3xl font-bold text-sky-900">Register</p>
         <Form method="post" className="space-y-6">
           <div>
             <label
               htmlFor="username"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-500"
             >
-              Username
+              Username*
             </label>
             <div className="mt-1">
               <input
@@ -150,7 +156,7 @@ export default function Register() {
                 type="text"
                 aria-invalid={actionData?.errors?.username ? true : undefined}
                 aria-describedby="username-error"
-                className="w-full px-2 py-1 text-lg border border-gray-500 rounded"
+                className="w-full px-2 py-1 text-lg border rounded-lg border-sky-300"
               />
               {actionData?.errors?.username && (
                 <div className="pt-1 text-red-700" id="username-error">
@@ -163,9 +169,9 @@ export default function Register() {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-500"
             >
-              Email address
+              Email address*
             </label>
             <div className="mt-1">
               <input
@@ -176,7 +182,7 @@ export default function Register() {
                 autoComplete="email"
                 aria-invalid={actionData?.errors?.email ? true : undefined}
                 aria-describedby="email-error"
-                className="w-full px-2 py-1 text-lg border border-gray-500 rounded"
+                className="w-full px-2 py-1 text-lg border rounded-lg border-sky-300"
               />
               {actionData?.errors?.email && (
                 <div className="pt-1 text-red-700" id="email-error">
@@ -189,9 +195,9 @@ export default function Register() {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-500"
             >
-              Password
+              Password*
             </label>
             <div className="mt-1">
               <input
@@ -203,7 +209,7 @@ export default function Register() {
                 autoComplete="new-password"
                 aria-invalid={actionData?.errors?.password ? true : undefined}
                 aria-describedby="password-error"
-                className="w-full px-2 py-1 text-lg border border-gray-500 rounded"
+                className="w-full px-2 py-1 text-lg border rounded-lg border-sky-300"
               />
               {actionData?.errors?.password && (
                 <div className="pt-1 text-red-700" id="password-error">
@@ -216,9 +222,9 @@ export default function Register() {
           <div>
             <label
               htmlFor="confirmPassword"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-500"
             >
-              Confirm Password
+              Confirm Password*
             </label>
             <div className="mt-1">
               <input
@@ -231,7 +237,7 @@ export default function Register() {
                   actionData?.errors?.confirmPassword ? true : undefined
                 }
                 aria-describedby="confirmPassword-error"
-                className="w-full px-2 py-1 text-lg border border-gray-500 rounded"
+                className="w-full px-2 py-1 text-lg border rounded-lg border-sky-300"
               />
               {actionData?.errors?.confirmPassword && (
                 <div className="pt-1 text-red-700" id="confirmPassword-error">
@@ -246,11 +252,11 @@ export default function Register() {
               id="newsletter"
               name="newsletter"
               type="checkbox"
-              className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              className="w-5 h-5 ml-1 rounded-lg text-sky-600 border-sky-300 focus:ring-sky-500"
             />
             <label
               htmlFor="newsletter"
-              className="block ml-2 text-sm text-gray-900"
+              className="ml-3 text-base font-medium text-sky-900"
             >
               Subscribe to newsletter
             </label>
@@ -259,7 +265,7 @@ export default function Register() {
           <input type="hidden" name="redirectTo" value={redirectTo} />
           <button
             type="submit"
-            className="w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:bg-blue-400"
+            className="w-full px-4 py-2 text-white rounded-lg bg-sky-700 hover:bg-blue-900 focus:bg-sky-500"
           >
             Create Account
           </button>
@@ -267,13 +273,13 @@ export default function Register() {
             <div className="text-sm text-center text-gray-500">
               Already have an account?{" "}
               <Link
-                className="text-blue-500 underline"
+                className="ml-2 font-medium underline text-sky-900 underline-offset-4"
                 to={{
                   pathname: "/login",
                   search: searchParams.toString(),
                 }}
               >
-                Log in
+                Login
               </Link>
             </div>
           </div>

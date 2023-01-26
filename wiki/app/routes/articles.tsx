@@ -26,12 +26,12 @@ export default function Articles() {
   const { allArticles } = useLoaderData<typeof loader>();
 
   return (
-    <div className="flex mt-8 border-4 border-black justify-evenly">
-      <div className="flex w-1/4 border-4 border-green-700 ">
+    <div className="flex mt-8 justify-evenly">
+      <div className="flex w-1/4 ">
         {allArticles.length === 0 ? (
           <p> inga artikel ännu </p>
         ) : (
-          <ol className="flex flex-col w-full px-3 list-decimal list-inside border-4 border-blue-700 xl:px-6">
+          <ol className="flex flex-col w-full px-3 list-decimal list-inside xl:px-6">
             {allArticles.map((article) => (
               <li className="mt-4" key={article.slug}>
                 <button>
@@ -48,7 +48,7 @@ export default function Articles() {
 
                 <p>
                   {" "}
-                  <span>{article.likesCount} like</span> -{" "}
+                  <span className="pr-4 ">{article.likesCount} like</span>{" "}
                   <span> By: {article.author.username} </span>{" "}
                 </p>
               </li>
@@ -56,7 +56,7 @@ export default function Articles() {
           </ol>
         )}
       </div>
-      <div className="w-2/4 max-w-screen-xl border-4 border-red-500">
+      <div className="w-2/4 max-w-screen-xl ">
         <Outlet />
       </div>
     </div>

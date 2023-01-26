@@ -98,8 +98,9 @@ export default function Login() {
   const redirectTo = searchParams.get("redirectTo") || "/";
 
   return (
-    <div className="flex flex-col justify-center min-h-full">
-      <div className="w-full max-w-md px-8 mx-auto">
+    <div className="flex flex-col justify-center min-h-full mt-12">
+      <div className="w-full max-w-md mx-auto">
+        <p className="mb-8 text-3xl font-bold text-sky-900">Login</p>
         <Form method="post" className="space-y-6">
           {/*   <div>
             <label
@@ -131,7 +132,7 @@ export default function Login() {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-500"
             >
               Email address
             </label>
@@ -145,7 +146,7 @@ export default function Login() {
                 autoComplete="email"
                 aria-invalid={actionData?.errors?.email ? true : undefined}
                 aria-describedby="email-error"
-                className="w-full px-2 py-1 text-lg border border-gray-500 rounded"
+                className="w-full px-2 py-1 text-lg border rounded-lg border-sky-300"
               />
               {actionData?.errors?.email && (
                 <div className="pt-1 text-red-700" id="email-error">
@@ -158,21 +159,20 @@ export default function Login() {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-500"
             >
               Password
             </label>
             <div className="mt-1">
               <input
                 id="password"
-                minLength={8}
                 required
                 name="password"
                 type="password"
                 autoComplete="current-password"
                 aria-invalid={actionData?.errors?.password ? true : undefined}
                 aria-describedby="password-error"
-                className="w-full px-2 py-1 text-lg border border-gray-500 rounded"
+                className="w-full px-2 py-1 text-lg border rounded-lg border-sky-300"
               />
               {actionData?.errors?.password && (
                 <div className="pt-1 text-red-700" id="password-error">
@@ -185,9 +185,9 @@ export default function Login() {
           <input type="hidden" name="redirectTo" value={redirectTo} />
           <button
             type="submit"
-            className="w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:bg-blue-400"
+            className="w-full px-4 py-2 text-white rounded-lg bg-sky-800 hover:bg-sky-900 focus:bg-sky-500"
           >
-            Log in
+            Login
           </button>
           <div className="flex items-center justify-between">
             <div className="flex items-center">
@@ -195,25 +195,24 @@ export default function Login() {
                 id="remember"
                 name="remember"
                 type="checkbox"
-                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                className="w-4 h-4 rounded-md border-sky-800 text-sky-600 focus:ring-blue-500"
               />
               <label
                 htmlFor="remember"
-                className="block ml-2 text-sm text-gray-900"
+                className="block ml-2 text-sm text-sky-900"
               >
                 Remember me
               </label>
             </div>
-            <div className="text-sm text-center text-gray-500">
-              Don't have an account?{" "}
+            <div className="">
               <Link
-                className="text-blue-500 underline"
+                className="mr-2 underline text-sky-900 underline-offset-4"
                 to={{
                   pathname: "/register",
                   search: searchParams.toString(),
                 }}
               >
-                Sign up
+                Register here
               </Link>
             </div>
           </div>

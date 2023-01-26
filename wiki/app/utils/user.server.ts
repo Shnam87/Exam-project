@@ -31,12 +31,18 @@ type UserForm = {
   username: string;
   email: string;
   password: string;
+  newsletter?: boolean;
 };
 
-export async function registerUser({ username, email, password }: UserForm) {
+export async function registerUser({
+  username,
+  email,
+  password,
+  newsletter,
+}: UserForm) {
   const passwordHash = await bcrypt.hash(password, 10);
   const user = await prisma.user.create({
-    data: { username, email, passwordHash },
+    data: { username, email, passwordHash, newsletter },
   });
   return { id: user.id, username, email };
 }
@@ -170,14 +176,8 @@ export async function logout(request: Request) {
   });
 }
 
-export async function deleteUser(username: string, request: Request) {
-  const session = await currentSession(request);
-  await prisma.user.delete({ where: { username } });
-  return redirect("/", {
-    headers: {
-      "Set-Cookie": await sessionStorage.destroySession(session),
-    },
-  });
+export async function deleteUser(username: string) {
+  return prisma.user.delete({ where: { username } });
 }
 
 type sessionParams = {

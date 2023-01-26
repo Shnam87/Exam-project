@@ -36,15 +36,16 @@ export default function ArticleSlug() {
   const { article, content } = useLoaderData<typeof loader>();
 
   return (
-    <main className="max-w-4xl mx-auto">
-      <h1 className="my-6 text-3xl text-center border-b-2">{article.title}</h1>
-      <p className="my-2 text-sm ">
-        Publicerad: {new Date(article.createdAt).toLocaleString()};
-      </p>
-      <p className="my-2 text-sm ">By: {article.author.username}</p>
-      <p className="my-2 text-sm ">
+    <main className="mx-auto mt-8 prose md:prose-base lg:prose-xl">
+      <h1 className="text-sky-900">{article.title}</h1>
+      <span className="">
+        Publicerad: {new Date(article.createdAt).toLocaleString()}
+      </span>
+      <span className="ml-4 ">By: {article.author.username}</span>
+      <br />
+      <span className="">
         Senast uppdaterad: {new Date(article.updatedAt).toLocaleString()};
-      </p>
+      </span>
       <div dangerouslySetInnerHTML={{ __html: content }} />
     </main>
   );

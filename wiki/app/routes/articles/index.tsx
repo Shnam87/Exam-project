@@ -1,5 +1,5 @@
 import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import { marked } from "marked";
 //import { prisma } from "~/utils/db.sever";
 import { prisma } from "~/utils/dbConnection.server";
@@ -9,8 +9,8 @@ export const loader = async () => {
   const randomNumber = Math.floor(Math.random() * count);
 
   const featuredArticles = await prisma.article.findMany({
-    take: 2,
-    skip: randomNumber,
+    take: 3,
+    //skip: randomNumber,
     include: {
       author: {
         select: {
@@ -20,50 +20,55 @@ export const loader = async () => {
     },
   });
 
-  /*
-  if (!featuredArticle) {
-    throw new Response(" There is no featured article", { status: 404 });
-  }
-  */
-
   return json({ featuredArticles });
 };
 
 export default function ArticlesIndexRoute() {
   const { featuredArticles } = useLoaderData<typeof loader>();
-  //const content = marked(featuredArticle.content);
-
-  const date = new Intl.DateTimeFormat("sv", {
-    dateStyle: "full",
-    timeStyle: "long",
-  });
 
   return (
     <div>
       {featuredArticles?.length === 0 ? (
-        <p className="p-4">There is no featured article yet</p>
+        <p className="p-4 text-lg font-bold text-sky-900">
+          There is no featured article yet
+        </p>
       ) : (
         <div>
+          <p className="px-2 my-2 text-base font-bold lg:text-xl md:text-lg text-sky-900">
+            Featured articles:
+          </p>
           {featuredArticles?.map((featuredArticle) => (
-            <div className="mb-4 border-4 border-green-600">
-              <h1 className="my-6 text-3xl text-center border-b-2">
+            <div className="px-2 mt-2 border-2" key={featuredArticle.slug}>
+              <h2 className="text-lg font-bold text-sky-900 lg:text-xl">
                 {featuredArticle.title}
-              </h1>
-              <p className="my-2 text-sm ">
-                Publicerad: {date.format(new Date(featuredArticle.createdAt))}
-              </p>
-              <p className="my-2 text-sm ">
+              </h2>
+              <span className="pr-4 text-xs ">
+                Publicerad: {new Date(featuredArticle.createdAt).toDateString()}
+              </span>
+              <span className="text-xs">
                 By: {featuredArticle.author.username}
-              </p>
-              <p className="my-2 text-sm ">
+              </span>
+              {/* <p className="my-2 text-sm ">
                 Senast uppdaterad:{" "}
                 {date.format(new Date(featuredArticle.updatedAt))}
-              </p>
+              </p> */}
               <div
+                className="line-clamp-3"
                 dangerouslySetInnerHTML={{
                   __html: marked(featuredArticle.content),
                 }}
               />
+              <span>
+                {" "}
+                <Link
+                  to={featuredArticle.slug}
+                  prefetch="intent"
+                  className="p-2"
+                >
+                  {" "}
+                  Read more{" "}
+                </Link>{" "}
+              </span>
             </div>
           ))}
         </div>

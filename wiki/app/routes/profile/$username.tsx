@@ -40,7 +40,7 @@ export default function UserProfile() {
   return (
     <div className="">
       <div className="flex flex-col 2xl:flex-row ">
-        <div className="w-full p-4 m-4 bg-white border-4 border-red-700 rounded-lg shadow-xl 2xl:w-2/4">
+        <div className="w-full p-4 m-4 bg-white rounded-lg shadow-xl 2xl:w-2/4">
           <h4 className="text-xl font-bold text-gray-900">Personal Info</h4>
           <ul className="mt-2 text-gray-700">
             <li className="flex py-2 border-y">
@@ -69,12 +69,18 @@ export default function UserProfile() {
               <span className="text-gray-700">{user.email}</span>
             </li>
             <li className="flex py-2 border-b">
+              <span className="w-40 font-bold ">Subscribe to newsletter:</span>
+              <span className="text-gray-700">
+                {user.newsletter ? "Yes" : "No"}
+              </span>
+            </li>
+            <li className="flex py-2 border-b">
               <span className="w-40 font-bold ">Number of contributions:</span>
               <span className="text-gray-700"> {count} </span>
             </li>
           </ul>
         </div>
-        <div className="w-full p-4 m-4 bg-white border-4 border-green-700 rounded-lg shadow-xl 2xl:w-2/4">
+        <div className="w-full p-4 m-4 bg-white rounded-lg shadow-xl 2xl:w-2/4">
           <h4 className="text-xl font-bold text-gray-900">
             Your contributions:
           </h4>
@@ -82,7 +88,7 @@ export default function UserProfile() {
             {userProfile?.length === 0 ? (
               <p className="p-4">No contributions yet</p>
             ) : (
-              <div className="list-decimal list-inside border-4 border-blue-700">
+              <div className="list-decimal list-inside">
                 {userProfile?.map((article) => (
                   <div>
                     <p className="mt-4" key={article.slug}>
