@@ -1,20 +1,23 @@
 # My examination project
 
-Creating a interaktiv and responsive Wiki page using Remix framework and TypeScript. 
- - Styling with Tailwind CSS 
- - Database in PostgreSQL 
- - Connecting to database using Prisma ORM
+Creating a interaktiv and responsive Wiki page using Remix framework and TypeScript.
+
+- Styling with Tailwind CSS
+- Database in PostgreSQL
+- Connecting to database using Prisma ORM
 
 Loggning av process by:
- - Toggl: https://track.toggl.com/timer
- - Jira: https://wie21s-exam.atlassian.net/browse/WIKI
+
+- Toggl: https://track.toggl.com/timer
+- Jira: https://wie21s-exam.atlassian.net/browse/WIKI
 
 ## Some requirements:
-In order to run and test this, you need to have:
- - The Postgres software installed and running
- - Node version 18 or a relative new version
- - Add a .env file like the exemple
 
+In order to run and test this, you need to have:
+
+- The Postgres software installed and running
+- Node version 18 or a relative new version
+- Add a .env file like the exempel
 
 From your terminal:
 

@@ -107,3 +107,17 @@ export default function App() {
     </Document>
   );
 }
+
+//  Dealing with unexpected errors
+export function ErrorBoundary({ error }: { error: Error }) {
+  return (
+    <Document title="Uh-oh!">
+      <div className="m-4 font-bold text-center">
+        <h1 className="m-4 text-3xl font-extrabold text-red-600">
+          Something unexpected went wrong. Sorry about that.
+        </h1>
+        <pre>{error.message}</pre>
+      </div>
+    </Document>
+  );
+}

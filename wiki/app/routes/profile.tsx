@@ -1,5 +1,11 @@
 import { json, LoaderArgs } from "@remix-run/node";
-import { NavLink, Outlet, useLoaderData } from "@remix-run/react";
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useCatch,
+  useLoaderData,
+} from "@remix-run/react";
 import invariant from "tiny-invariant";
 
 import { getUser, requireUser } from "~/utils/user.server";
@@ -67,6 +73,40 @@ export default function UserDashboard() {
           <Outlet />
         </div>
       </div>
+    </div>
+  );
+}
+
+//  Dealing with expected errors
+export function CatchBoundary() {
+  const caught = useCatch();
+
+  if (caught.status === 401) {
+    return (
+      <div className="m-4 font-bold text-center text-red-600">
+        <p className="m-4 text-3xl">Unauthorized</p>
+        <p className="m-4 text-2xl">
+          You must be logged in to access the profile page .
+        </p>
+        <Link
+          to="/login?redirectTo=/profile"
+          className="m-4 text-3xl font-extrabold text-sky-900"
+        >
+          Login
+        </Link>
+      </div>
+    );
+  }
+
+  throw new Error(`Unexpected caught response with status: ${caught.status}`);
+}
+
+//  Dealing with unexpected errors
+export function ErrorBoundary({ error }: { error: Error }) {
+  console.error(error);
+  return (
+    <div className="m-4 text-2xl font-bold text-center text-red-600">
+      Something unexpected went wrong. Sorry about that.
     </div>
   );
 }

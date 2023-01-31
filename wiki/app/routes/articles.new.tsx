@@ -2,7 +2,7 @@ import type { ActionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData, useTransition } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { addArticle, generateSlug } from "~/utils/article.server";
+import { addArticle, generateSlug, getArticle } from "~/utils/article.server";
 import { requireInLoggedUser } from "~/utils/user.server";
 
 export async function action({ request }: ActionArgs) {
@@ -55,6 +55,13 @@ export async function action({ request }: ActionArgs) {
   invariant(typeof content === "string", "content must be a string");
 
   const slug = await generateSlug(title);
+
+  /*
+  const articleTitleExists = await getArticle(slug);
+  if (articleTitleExists) {
+    Window.prototype.alert("An article with the same title already exists");
+  }
+  */
 
   const article = await addArticle({ slug, title, content, authorId });
   return redirect(`/articles/${article.slug}`);
@@ -156,6 +163,18 @@ export default function NewArticle() {
         </button> */}
         </div>
       </Form>
+    </div>
+  );
+}
+
+export function ErrorBoundary({ error }: { error: Error }) {
+  console.error(error);
+  return (
+    <div className="m-4 font-bold text-center text-red-600 ">
+      <div className="text-2xl">
+        An article with the same title already exists
+      </div>
+      <div className="text-3xl font-extrabold">Try again</div>
     </div>
   );
 }

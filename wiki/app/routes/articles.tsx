@@ -62,3 +62,13 @@ export default function Articles() {
     </div>
   );
 }
+
+//  Dealing with unexpected errors
+export function ErrorBoundary({ error }: { error: Error }) {
+  console.error(error);
+  return (
+    <div className="m-4 text-2xl font-bold text-center text-red-600">
+      Something unexpected went wrong. Sorry about that.
+    </div>
+  );
+}

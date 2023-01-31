@@ -1,6 +1,6 @@
 import type { LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useCatch, useLoaderData, useParams } from "@remix-run/react";
 import { marked } from "marked";
 import invariant from "tiny-invariant";
 import { getArticle } from "~/utils/article.server";
@@ -48,5 +48,35 @@ export default function ArticleSlug() {
       </span>
       <div dangerouslySetInnerHTML={{ __html: content }} />
     </main>
+  );
+}
+
+//  Dealing with expected errors
+export function CatchBoundary() {
+  const caught = useCatch();
+  const params = useParams();
+  switch (caught.status) {
+    case 404: {
+      return (
+        <div className="m-4 text-2xl font-bold text-center text-red-600">
+          Sorry but there is no article with {params.slug}.
+        </div>
+      );
+    }
+    default: {
+      throw new Error(`Unhandled error: ${caught.status}`);
+    }
+  }
+}
+
+//  Dealing with unexpected errors
+export function ErrorBoundary({ error }: { error: Error }) {
+  console.error(error);
+
+  const { slug } = useParams();
+  return (
+    <div className="m-4 text-2xl font-bold text-center text-red-600">
+      There was an error loading joke by the id {slug}. Sorry.
+    </div>
   );
 }
